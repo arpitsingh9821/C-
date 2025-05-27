@@ -2,80 +2,37 @@
 #include <string>
 using namespace std;
 
-// Function to divide two integers with specified precision
-string divideWithPrecision(int numerator, int denominator, int precision) {
-    if (denominator == 0) {
-        return "Cannot divide by zero";
-    }
-
-    string result = "";
-
-    
-    int intPart = numerator / denominator;
-    result += to_string(intPart) + ".";
-
+class Calculator {
+public:
    
-    int remainder = numerator % denominator;
-
-    for (int i = 0; i < precision; ++i) {
-        remainder *= 10;
-        int digit = remainder / denominator;
-        result += to_string(digit);
-        remainder %= denominator;
-
-        
-        if (remainder == 0) {
-            result += string(precision - i - 1, '0'); 
-            break;
+    string divideWithPrecision(int numerator, int denominator, int precision) {
+        if (denominator == 0) {
+            return "Cannot divide by zero";
         }
+
+        string result = "";
+        int intPart = numerator / denominator;
+        result += to_string(intPart) + ".";
+
+        int remainder = numerator % denominator;
+
+        for (int i = 0; i < precision; ++i) {
+            remainder *= 10;
+            int digit = remainder / denominator;
+            result += to_string(digit);
+            remainder %= denominator;
+
+            if (remainder == 0) {
+                result += string(precision - i - 1, '0');
+                break;
+            }
+        }
+
+        return result;
     }
 
-    return result;
-}
-
-//getting user inputs for operation
-int getOperation() {
-    int op;
-    cout << "Select operation:\n1.Add\n2.Subtract\n3.Multiply\n4.Divide\n";
-    cout << "Enter operation number: ";
-    cin >> op;
-    return op;
-}
-// getting user inputs for numbers
-double getNumber(const string& prompt) {
-    double num;
-    cout << prompt;
-    cin >> num;
-    return num;
-}
-
-int main() {
-    int operation = getOperation();
-    double num1 = getNumber("Enter first number: ");
-    double num2 = getNumber("Enter second number: ");
-    int precision;
-
-    cout << "Enter number of digits after decimal: ";
-    cin >> precision;
-
-    if (operation == 4) {
-        
-        int intNum1 = static_cast<int>(num1);
-        int intNum2 = static_cast<int>(num2);
-
-        string result = divideWithPrecision(intNum1, intNum2, precision);
-        cout << "Result: " << result << endl;
-    } else {
-        double result;
-        if (operation == 1) result = num1 + num2;
-        else if (operation == 2) result = num1 - num2;
-        else if (operation == 3) result = num1 * num2;
-        else {
-            cout << "Invalid operation\n";
-            return 1;
-        }
-
-        // Handle precision for addition, subtraction, and multiplication
+    // Method for addition, subtraction, and multiplication with precision
+    string formatWithPrecision(double result, int precision) {
         int intPart = static_cast<int>(result);
         double fracPart = result - intPart;
 
@@ -88,7 +45,52 @@ int main() {
             fracPart -= digit;
         }
 
-        cout << "Result: " << resultStr << endl;
+        return resultStr;
+    }
+};
+
+int getOperation() {
+    int op;
+    cout << "Select operation:\n1.Add\n2.Subtract\n3.Multiply\n4.Divide\n";
+    cout << "Enter operation number: ";
+    cin >> op;
+    return op;
+}
+
+double getNumber(const string& prompt) {
+    double num;
+    cout << prompt;
+    cin >> num;
+    return num;
+}
+
+int main() {
+    Calculator calc;
+
+    int operation = getOperation();
+    double num1 = getNumber("Enter first number: ");
+    double num2 = getNumber("Enter second number: ");
+    int precision;
+
+    cout << "Enter number of digits after decimal: ";
+    cin >> precision;
+
+    if (operation == 4) {
+        int intNum1 = static_cast<int>(num1);
+        int intNum2 = static_cast<int>(num2);
+        string result = calc.divideWithPrecision(intNum1, intNum2, precision);
+        cout << "Result: " << result << endl;
+    } else {
+        double result;
+        if (operation == 1) result = num1 + num2;
+        else if (operation == 2) result = num1 - num2;
+        else if (operation == 3) result = num1 * num2;
+        else {
+            cout << "Invalid operation\n";
+            return 1;
+        }
+
+        cout << "Result: " << calc.formatWithPrecision(result, precision) << endl;
     }
 
     return 0;
