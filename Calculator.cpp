@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-// Divide with long division logic (string-based)
+// Function to divide two integers with specified precision
 string divideWithPrecision(int numerator, int denominator, int precision) {
     if (denominator == 0) {
         return "Cannot divide by zero";
@@ -10,11 +10,11 @@ string divideWithPrecision(int numerator, int denominator, int precision) {
 
     string result = "";
 
-    // Integer part
+    
     int intPart = numerator / denominator;
     result += to_string(intPart) + ".";
 
-    // Initial remainder
+   
     int remainder = numerator % denominator;
 
     for (int i = 0; i < precision; ++i) {
@@ -23,9 +23,9 @@ string divideWithPrecision(int numerator, int denominator, int precision) {
         result += to_string(digit);
         remainder %= denominator;
 
-        // Optional: Stop early if remainder becomes 0
+        
         if (remainder == 0) {
-            result += string(precision - i - 1, '0'); // Fill remaining with 0
+            result += string(precision - i - 1, '0'); 
             break;
         }
     }
@@ -33,7 +33,7 @@ string divideWithPrecision(int numerator, int denominator, int precision) {
     return result;
 }
 
-// Input helpers
+//getting user inputs for operation
 int getOperation() {
     int op;
     cout << "Select operation:\n1.Add\n2.Subtract\n3.Multiply\n4.Divide\n";
@@ -41,7 +41,7 @@ int getOperation() {
     cin >> op;
     return op;
 }
-
+// getting user inputs for numbers
 double getNumber(const string& prompt) {
     double num;
     cout << prompt;
@@ -59,7 +59,7 @@ int main() {
     cin >> precision;
 
     if (operation == 4) {
-        // Use integers for exact digit extraction
+        
         int intNum1 = static_cast<int>(num1);
         int intNum2 = static_cast<int>(num2);
 
@@ -75,7 +75,7 @@ int main() {
             return 1;
         }
 
-        // Convert to string manually
+        // Handle precision for addition, subtraction, and multiplication
         int intPart = static_cast<int>(result);
         double fracPart = result - intPart;
 
